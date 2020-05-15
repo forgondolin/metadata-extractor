@@ -1,16 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-from .helpers import is_valid_url
+from .helpers import cleanse
 from .scraper import scrape_embedded_yt_metadata, scrape_yt
 from music_metadata_extractor.models import BaseProviderInput
 
 
 def get_info(url: str) -> BaseProviderInput:
     """Generate provider input object for YouTube URL"""
-    response = requests.get(url)
+    clean_url = cleanse(url)
+    response = requests.get(clean_url)
     soup = BeautifulSoup(response.content, "lxml")
-
-    if not is_valid_url(soup):
-        raise ValueError("Invalid YouTube URL!")
 
     return scrape_yt(soup)

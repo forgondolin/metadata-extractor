@@ -13,6 +13,8 @@ def scrape_yt(soup) -> BaseProviderInput:
 
     raw_title = soup.find("meta", {"property": "og:title"}).get("content").strip()
     artist, title = None, None
+    clean_title = get_artist_title(raw_title)
+    print("clean_title=" + clean_title)
 
     # In case the YouTube Title is in the commonly used format <Artist> - <Song name>
     if "-" in raw_title:

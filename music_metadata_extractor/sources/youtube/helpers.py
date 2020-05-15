@@ -1,8 +1,17 @@
-def is_valid_url(soup) -> bool:
-    """Verify if URL is of a valid video page"""
-    if soup.find("meta", {"property": "og:title"}):
-        return True
-    return False
+import re
+
+
+def cleanse(url: str) -> str:
+    pattern_match = re.search(
+        (
+            r"(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/"
+            r"(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\-_]+)"
+        ),
+        url,
+    )
+    video_id = pattern_match.group(1)
+    clean_url = "https://www.youtube.com/watch?v=%s" % (video_id)
+    return clean_url
 
 
 def clean_channel(raw_channel: str) -> str:
